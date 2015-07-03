@@ -37,15 +37,32 @@ class GameScene: SKScene
 	lazy var graph: GKObstacleGraph =
 	{
 		let points = UnsafeMutablePointer<float2>.alloc(4)
-		points[0] = float2(Float(self.size.width / 2 - 50), Float(self.size.height / 2 - 50))
-		points[1] = float2(Float(self.size.width / 2 - 50), Float(self.size.height / 2 + 50))
-		points[2] = float2(Float(self.size.width / 2 + 50), Float(self.size.height / 2 + 50))
-		points[3] = float2(Float(self.size.width / 2 + 50), Float(self.size.height / 2 - 50))
+		points[0] = float2(Float(self.size.width / 3 - 50), Float(self.size.height / 2 - 50))
+		points[1] = float2(Float(self.size.width / 3 - 50), Float(self.size.height / 2 + 50))
+		points[2] = float2(Float(self.size.width / 3 + 50), Float(self.size.height / 2 + 50))
+		points[3] = float2(Float(self.size.width / 3 + 50), Float(self.size.height / 2 - 50))
+
+		let points2 = UnsafeMutablePointer<float2>.alloc(4)
+		points2[0] = float2(Float(2 * self.size.width / 3 - 50), Float(self.size.height / 2 - 50))
+		points2[1] = float2(Float(2 * self.size.width / 3 - 50), Float(self.size.height / 2 + 50))
+		points2[2] = float2(Float(2 * self.size.width / 3 + 50), Float(self.size.height / 2 + 50))
+		points2[3] = float2(Float(2 * self.size.width / 3 + 50), Float(self.size.height / 2 - 50))
 
 		let obstacle = GKPolygonObstacle(points: points, count: 4)
-		let graph = GKObstacleGraph(obstacles: [obstacle], bufferRadius: Float(self.shipSprite.size.width))
+		let obstacle2 = GKPolygonObstacle(points: points2, count: 4)
+		let graph = GKObstacleGraph(obstacles: [obstacle, obstacle2], bufferRadius: 0) //Float(self.shipSprite.size.width))
+
+		for node in graph.nodes!
+		{
+			NSLog("\(node)")
+			for connectedNode in node.connectedNodes
+			{
+				NSLog("   \(connectedNode)")Ω
+			}
+		}
 
 		points.destroy()
+		points2.destroy()
 
 		return graph
 	}()
@@ -55,6 +72,7 @@ class GameScene: SKScene
 	var nextPosition: float2?
 
 	let obstacleNode = SKSpriteNode()
+	let obstacleNode2 = SKSpriteNode()
 	let pathNode = SKShapeNode()
 
 	override func didMoveToView(view: SKView)
@@ -69,10 +87,15 @@ class GameScene: SKScene
 		shipSprite.yScale = 0.5
 		addChild(shipSprite)
 
-		obstacleNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+		obstacleNode.position = CGPoint(x: size.width / 3, y: size.height / 2)
 		obstacleNode.size = CGSize(width: 100, height: 100)
 		obstacleNode.color = UIColor.redColor()
 		addChild(obstacleNode)
+
+		obstacleNode2.position = CGPoint(x: 2 * size.width / 3, y: size.height / 2)
+		obstacleNode2.size = CGSize(width: 100, height: 100)
+		obstacleNode2.color = UIColor.redColor()
+		addChild(obstacleNode2)
 	}
 
 	override func didChangeSize(oldSize: CGSize)
