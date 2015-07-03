@@ -115,6 +115,8 @@ class GameScene: SKScene
 				pathNode.path = linePath
 			}
 		}
+
+		graph.removeNodes([startNode, endNode])
 	}
 
 	override func update(currentTime: CFTimeInterval)
