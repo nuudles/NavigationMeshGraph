@@ -55,10 +55,15 @@ class GameScene: SKScene
 	var nextPosition: float2?
 
 	let obstacleNode = SKSpriteNode()
+	let pathNode = SKShapeNode()
 
 	override func didMoveToView(view: SKView)
 	{
 		super.didMoveToView(view)
+
+		pathNode.strokeColor = UIColor.blueColor()
+		pathNode.lineWidth = 10
+		addChild(pathNode)
 
 		shipSprite.xScale = 0.5
 		shipSprite.yScale = 0.5
@@ -97,7 +102,18 @@ class GameScene: SKScene
 		if let path = graph.findPathFromNode(startNode, toNode: endNode) as? [GKGraphNode2D]
 		{
 			nextPosition = nil
-			self.path = path
+			self.path = path.count > 0 ? path : nil
+
+			if path.count > 0
+			{
+				let linePath = CGPathCreateMutable()
+				CGPathMoveToPoint(linePath, nil, CGFloat(path[0].position.x), CGFloat(path[0].position.y))
+				for node in path
+				{
+					CGPathAddLineToPoint(linePath, nil, CGFloat(node.position.x), CGFloat(node.position.y))
+				}
+				pathNode.path = linePath
+			}
 		}
 	}
 
@@ -105,7 +121,7 @@ class GameScene: SKScene
 	{
 		let deltaTime = currentTime - lastTime
 
-		if path != nil && nextPosition == nil && path!.count > 0
+		if path != nil && nextPosition == nil
 		{
 			nextPosition = path![0].position
 			path!.removeAtIndex(0)
