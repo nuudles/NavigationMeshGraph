@@ -50,14 +50,14 @@ class GameScene: SKScene
 
 		let obstacle = GKPolygonObstacle(points: points, count: 4)
 		let obstacle2 = GKPolygonObstacle(points: points2, count: 4)
-		let graph = GKObstacleGraph(obstacles: [obstacle, obstacle2], bufferRadius: 0) //Float(self.shipSprite.size.width))
+		let graph = GKObstacleGraph(obstacles: [obstacle, obstacle2], bufferRadius: Float(self.shipSprite.size.width))
 
 		for node in graph.nodes!
 		{
 			NSLog("\(node)")
 			for connectedNode in node.connectedNodes
 			{
-				NSLog("   \(connectedNode)")Ω
+				NSLog("   \(connectedNode)")
 			}
 		}
 
@@ -78,6 +78,8 @@ class GameScene: SKScene
 	override func didMoveToView(view: SKView)
 	{
 		super.didMoveToView(view)
+
+		shipSprite.position = CGPoint(x: 150, y: 300)
 
 		pathNode.strokeColor = UIColor.blueColor()
 		pathNode.lineWidth = 10
@@ -101,12 +103,6 @@ class GameScene: SKScene
 	override func didChangeSize(oldSize: CGSize)
 	{
 		super.didChangeSize(oldSize)
-
-		var position = shipSprite.position
-		position.y = size.height / 2
-		shipSprite.position = position
-
-		obstacleNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
 	}
 
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
