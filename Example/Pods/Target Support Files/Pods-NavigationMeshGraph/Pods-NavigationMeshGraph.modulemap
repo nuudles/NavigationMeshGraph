@@ -1,6 +1,0 @@
-framework module NavigationMeshGraph {
-  umbrella header "Pods-NavigationMeshGraph-umbrella.h"
-
-  export *
-  module * { export * }
-}
