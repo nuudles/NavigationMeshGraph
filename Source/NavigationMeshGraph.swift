@@ -8,7 +8,13 @@
 
 import GameplayKit
 
-class NavigationMeshGraph: GKGraph
+public class NavigationMeshGraph: GKGraph
 {
+	var polygons: [NavigationMeshPolygon]
 
+	init(polygons: [NavigationMeshPolygon])
+	{
+		self.polygons = polygons
+		super.init()
+	}
 }
