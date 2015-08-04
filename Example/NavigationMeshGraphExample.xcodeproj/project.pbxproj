@@ -16,6 +16,7 @@
 		30C111691B46011000BD2838 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30C111671B46011000BD2838 /* LaunchScreen.storyboard */; };
 		30C111741B46011000BD2838 /* NavigationMeshGraphExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C111731B46011000BD2838 /* NavigationMeshGraphExampleTests.swift */; };
 		30C1117F1B46011100BD2838 /* NavigationMeshGraphExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C1117E1B46011100BD2838 /* NavigationMeshGraphExampleUITests.swift */; };
+		30FE46A01B7059E000B63ED9 /* Testing.json in Resources */ = {isa = PBXBuildFile; fileRef = 30FE469F1B7059E000B63ED9 /* Testing.json */; };
 		D95997D5BB90D4F307E4DC4F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9087006B83048E15A5E9DAEA /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		30C1117A1B46011100BD2838 /* NavigationMeshGraphExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigationMeshGraphExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30C1117E1B46011100BD2838 /* NavigationMeshGraphExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMeshGraphExampleUITests.swift; sourceTree = "<group>"; };
 		30C111801B46011100BD2838 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30FE469F1B7059E000B63ED9 /* Testing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Testing.json; sourceTree = "<group>"; };
 		9087006B83048E15A5E9DAEA /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 				30C1115C1B46011000BD2838 /* GameScene.sks */,
 				30C1115E1B46011000BD2838 /* GameScene.swift */,
 				30C111601B46011000BD2838 /* GameViewController.swift */,
+				30FE469F1B7059E000B63ED9 /* Testing.json */,
 				30C111621B46011000BD2838 /* Main.storyboard */,
 				30C111651B46011000BD2838 /* Assets.xcassets */,
 				30C111671B46011000BD2838 /* LaunchScreen.storyboard */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30C1115D1B46011000BD2838 /* GameScene.sks in Resources */,
+				30FE46A01B7059E000B63ED9 /* Testing.json in Resources */,
 				30C111691B46011000BD2838 /* LaunchScreen.storyboard in Resources */,
 				30C111661B46011000BD2838 /* Assets.xcassets in Resources */,
 				30C111641B46011000BD2838 /* Main.storyboard in Resources */,

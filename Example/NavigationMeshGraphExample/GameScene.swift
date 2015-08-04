@@ -8,6 +8,8 @@
 
 import SpriteKit
 import GameplayKit
+import NavigationMeshGraph
+import SwiftyJSON
 
 // Extend `CGPoint` to add an initializer from a `float2` representation of a point.
 extension CGPoint {
@@ -34,36 +36,22 @@ extension float2 {
 class GameScene: SKScene
 {
 	let shipSprite = SKSpriteNode(imageNamed: "Spaceship")
-	lazy var graph: GKObstacleGraph =
+	lazy var graph: NavigationMeshGraph =
 	{
-		let points = UnsafeMutablePointer<float2>.alloc(4)
-		points[0] = float2(Float(self.size.width / 3 - 50), Float(self.size.height / 2 - 50))
-		points[1] = float2(Float(self.size.width / 3 - 50), Float(self.size.height / 2 + 50))
-		points[2] = float2(Float(self.size.width / 3 + 50), Float(self.size.height / 2 + 50))
-		points[3] = float2(Float(self.size.width / 3 + 50), Float(self.size.height / 2 - 50))
+		let json = JSON(data: NSData(contentsOfFile: NSBundle.mainBundle().pathForResource("Testing", ofType: "json")!)!)
 
-		let points2 = UnsafeMutablePointer<float2>.alloc(4)
-		points2[0] = float2(Float(2 * self.size.width / 3 - 50), Float(self.size.height / 2 - 50))
-		points2[1] = float2(Float(2 * self.size.width / 3 - 50), Float(self.size.height / 2 + 50))
-		points2[2] = float2(Float(2 * self.size.width / 3 + 50), Float(self.size.height / 2 + 50))
-		points2[3] = float2(Float(2 * self.size.width / 3 + 50), Float(self.size.height / 2 - 50))
-
-		let obstacle = GKPolygonObstacle(points: points, count: 4)
-		let obstacle2 = GKPolygonObstacle(points: points2, count: 4)
-		let graph = GKObstacleGraph(obstacles: [obstacle, obstacle2], bufferRadius: Float(self.shipSprite.size.width))
-
-		for node in graph.nodes!
+		var polygons: [NavigationMeshPolygon] = []
+		for polygon in json["rigidBodies"][0]["polygons"].arrayValue
 		{
-			NSLog("\(node)")
-			for connectedNode in node.connectedNodes
+			var points: [float2] = []
+			for point in polygon.arrayValue
 			{
-				NSLog("   \(connectedNode)")
+				points.append(float2(point["x"].floatValue * Float(self.size.width) + 50, point["y"].floatValue * Float(self.size.height) + 300))
 			}
+			polygons.append(NavigationMeshPolygon(points: points))
 		}
 
-		points.destroy()
-		points2.destroy()
-
+		let graph = NavigationMeshGraph(polygons: polygons)
 		return graph
 	}()
 
@@ -71,33 +59,54 @@ class GameScene: SKScene
 	var path: [GKGraphNode2D]?
 	var nextPosition: float2?
 
-	let obstacleNode = SKSpriteNode()
-	let obstacleNode2 = SKSpriteNode()
 	let pathNode = SKShapeNode()
 
 	override func didMoveToView(view: SKView)
 	{
 		super.didMoveToView(view)
 
-		shipSprite.position = CGPoint(x: 150, y: 300)
+		let polygonPath = CGPathCreateMutable()
+		for polygon in graph.polygons
+		{
+			let points = polygon.points
+			CGPathMoveToPoint(polygonPath, nil, CGFloat(points[0].x), CGFloat(points[0].y))
+			for point in points
+			{
+				CGPathAddLineToPoint(polygonPath, nil, CGFloat(point.x), CGFloat(point.y))
+			}
+		}
 
-		pathNode.strokeColor = UIColor.blueColor()
+		let polygonNode = SKShapeNode()
+		polygonNode.path = polygonPath
+		polygonNode.fillColor = .blueColor()
+		polygonNode.strokeColor = .greenColor()
+		addChild(polygonNode)
+
+		/*
+		// Uncomment this to draw the graph connections
+		for node in graph.nodes as! [GKGraphNode2D]
+		{
+			let path = CGPathCreateMutable()
+			for connectedNode in node.connectedNodes as! [GKGraphNode2D]
+			{
+				CGPathMoveToPoint(path, nil, CGFloat(node.position.x), CGFloat(node.position.y))
+				CGPathAddLineToPoint(path, nil, CGFloat(connectedNode.position.x), CGFloat(connectedNode.position.y))
+			}
+			let shapeNode = SKShapeNode()
+			shapeNode.path = path
+			shapeNode.strokeColor = UIColor.yellowColor()
+			addChild(shapeNode)
+		}
+		*/
+
+		pathNode.strokeColor = UIColor.redColor()
 		pathNode.lineWidth = 10
 		addChild(pathNode)
 
-		shipSprite.xScale = 0.5
-		shipSprite.yScale = 0.5
+		shipSprite.position = CGPoint(x: 200, y: 400)
+		shipSprite.xScale = 0.1
+		shipSprite.yScale = 0.1
 		addChild(shipSprite)
-
-		obstacleNode.position = CGPoint(x: size.width / 3, y: size.height / 2)
-		obstacleNode.size = CGSize(width: 100, height: 100)
-		obstacleNode.color = UIColor.redColor()
-		addChild(obstacleNode)
-
-		obstacleNode2.position = CGPoint(x: 2 * size.width / 3, y: size.height / 2)
-		obstacleNode2.size = CGSize(width: 100, height: 100)
-		obstacleNode2.color = UIColor.redColor()
-		addChild(obstacleNode2)
 	}
 
 	override func didChangeSize(oldSize: CGSize)
@@ -115,8 +124,8 @@ class GameScene: SKScene
 		let startNode = GKGraphNode2D(point: float2(startPosition))
 		let endNode = GKGraphNode2D(point: float2(endPosition))
 
-		graph.connectNodeUsingObstacles(startNode)
-		graph.connectNodeUsingObstacles(endNode)
+		graph.connectNodeToLowestCostNode(startNode, bidirectional: true)
+		graph.connectNodeToClosestPointOnNavigationMesh(endNode)
 
 		if let path = graph.findPathFromNode(startNode, toNode: endNode) as? [GKGraphNode2D]
 		{

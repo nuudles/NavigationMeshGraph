@@ -1,14 +1,25 @@
 PODS:
   - NavigationMeshGraph (0.0.1)
+  - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
   - NavigationMeshGraph (from `../`)
+  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
 
 EXTERNAL SOURCES:
   NavigationMeshGraph:
     :path: ../
+  SwiftyJSON:
+    :branch: xcode7
+    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
+
+CHECKOUT OPTIONS:
+  SwiftyJSON:
+    :commit: 45ca854ce75948858f65e31fbc58cbf214669250
+    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
   NavigationMeshGraph: b52fc9273895992057a3a510cf475c6494dcca29
+  SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

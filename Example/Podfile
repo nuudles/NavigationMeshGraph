@@ -5,3 +5,4 @@ use_frameworks!
 xcodeproj 'NavigationMeshGraphExample.xcodeproj'
 
 pod 'NavigationMeshGraph', :path => '../'
+pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
