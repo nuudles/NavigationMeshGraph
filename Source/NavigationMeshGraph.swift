@@ -8,9 +8,15 @@
 
 import GameplayKit
 
+/// A `NavigationMeshGraph` is a kind of `GKGraph` that will do pathfinding based on a
+/// navigation mesh defined by **convex** polygons. Unlike the `GKObstacleGraph`, this
+/// graph navigates such that the path stays on the mesh defined by the given polygons.
+/// Because of this behavior, connecting a node to the graph will move the node if it
+/// is not already on the navigation mesh.
 public class NavigationMeshGraph: GKGraph
 {
 	// MARK: - Public properties
+	/// The `NavigationMeshPolygon` objects that comprise the navigation mesh for the graph
 	public var polygons: [NavigationMeshPolygon]
 	{
 		didSet
@@ -20,6 +26,8 @@ public class NavigationMeshGraph: GKGraph
 	}
 
 	// MARK: - Initialization methods
+	/// Initialize the graph with an array of polygons
+	/// - parameter polygons The array of polygons to initialize with
 	public init(polygons: [NavigationMeshPolygon])
 	{
 		self.polygons = polygons
@@ -29,6 +37,10 @@ public class NavigationMeshGraph: GKGraph
 	}
 
 	// MARK: - Public methods
+	/// Connect a given node to the navigation mesh graph.
+	///
+	/// **Note** The position on the node may change if the position is not in the mesh.
+	/// - parameter node The GKGraphNode to connect
 	public func connectNodeToClosestPointOnNavigationMesh(node: GKGraphNode2D)
 	{
 		var minDistance = FLT_MAX
@@ -81,6 +93,7 @@ public class NavigationMeshGraph: GKGraph
 	}
 	
 	// MARK: - Private methods
+	/// Sets up the `GKGraphNode`s that make up the graph based on the polygons
 	private func resetNodesForPolygons()
 	{
 		if let nodes = nodes
@@ -110,6 +123,10 @@ public class NavigationMeshGraph: GKGraph
 		}
 	}
 
+	/// Add a point from a polygon to the graph if needed and add connections to the other points in the polygon
+	/// - parameter point The point to add
+	/// - parameter polygon The polygon associated with that point
+	/// - parameter pointToNode A running dictionary that holds associated points with their graph nodes
 	private func addPoint(point: float2, polygon: NavigationMeshPolygon, inout pointToNode: [String: GKGraphNode2D])
 	{
 		let graphNode: GKGraphNode2D
@@ -127,6 +144,12 @@ public class NavigationMeshGraph: GKGraph
 		pointToNode["\(point)"] = graphNode
 	}
 
+	/// Calculates the distance squared for the given point to the given line.
+	/// Also calculates the intersection point on the line that is closest to the point.
+	/// Will return `nil` if the closest point is not on the line.
+	/// - parameter point The point to find the closest spot on the line
+	/// - parameter toLine A tuple containing the two points making a line
+	/// - returns: Tuple containing the distance squared and the intersecting point or nil
 	private func distanceSquaredAndIntersectionFromPoint(point: float2, toLine line: (p1: float2, p2: float2)) -> (distanceSquared: Float, intersection: float2)?
 	{
 		// This code is ported from: http://paulbourke.net/geometry/pointlineplane/
@@ -143,6 +166,7 @@ public class NavigationMeshGraph: GKGraph
 	}
 }
 
+/// A simple `GKGraphNode2D` subclass used to override the default cost calculation behavior
 class NavigationMeshGraphNode: GKGraphNode2D
 {
 	// TODO: Revisit this? Find out why GKGraphNode2D's cost isn't related to distance as I thought it should be
