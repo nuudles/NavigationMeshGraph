@@ -62,3 +62,7 @@ let path = graph.findPathFromNode(startNode, toNode: endNode)
 ```
 
 Take a look at the Example project to see the graph in action. For the example I used the [Physics Body Editor](http://www.aurelienribon.com/blog/projects/physics-body-editor/) to create the set of convex polygons that make up the navigation mesh.
+
+## To Do
+
+The node creation is far from perfect and may benefit from exploring other automatic mesh creation techniques, such as the Delauney triangulation method.
