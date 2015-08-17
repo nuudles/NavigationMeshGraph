@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'NavigationMeshGraph'
-  s.version = '0.0.1'
+  s.version = '0.0.2'
   s.license = 'MIT'
   s.summary = 'Added pathfinding graph for Navigation Meshes'
   s.homepage = 'https://github.com/nuudles/NavigationMeshGraph'
