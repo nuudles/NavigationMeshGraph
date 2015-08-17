@@ -28,8 +28,7 @@ extension float2 {
 	
 	/// Initialize with a `CGPoint` type.
 	init(_ point: CGPoint) {
-		x = Float(point.x)
-		y = Float(point.y)
+		self.init(x: Float(point.x), y: Float(point.y))
 	}
 }
 

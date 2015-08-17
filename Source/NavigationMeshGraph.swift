@@ -154,7 +154,7 @@ public class NavigationMeshGraph: GKGraph
 	{
 		// This code is ported from: http://paulbourke.net/geometry/pointlineplane/
 		let (l1, l2) = line
-		let lineMagnitude = distance_squared(l1, y: l2)
+		let lineMagnitude = distance_squared(l1, l2)
 		let u = (((point.x - l1.x) * (l2.x - l1.x) + (point.y - l1.y) * (l2.y - l1.y)) / lineMagnitude)
 		if u < 0.0 || u > 1.0
 		{
@@ -162,7 +162,7 @@ public class NavigationMeshGraph: GKGraph
 		}
 
 		let intersection = float2(l1.x + u * (l2.x - l1.x), l1.y + u * (l2.y - l1.y))
-		return (distanceSquared: distance_squared(point, y: intersection), intersection: intersection)
+		return (distanceSquared: distance_squared(point, intersection), intersection: intersection)
 	}
 }
 
@@ -173,6 +173,6 @@ class NavigationMeshGraphNode: GKGraphNode2D
 	override func costToNode(node: GKGraphNode) -> Float
 	{
 		guard let graphNode = node as? GKGraphNode2D else { return super.costToNode(node) }
-		return distance_squared(position, y: graphNode.position)
+		return distance_squared(position, graphNode.position)
 	}
 }
