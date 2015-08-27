@@ -120,10 +120,10 @@ class GameScene: SKScene
 		let startPosition = shipSprite.position
 		let endPosition = touch.locationInNode(self)
 
-		let startNode = GKGraphNode2D(point: float2(startPosition))
-		let endNode = GKGraphNode2D(point: float2(endPosition))
+		let startNode = NavigationMeshGraphNode(point: float2(startPosition))
+		let endNode = NavigationMeshGraphNode(point: float2(endPosition))
 
-		graph.connectNodeToLowestCostNode(startNode, bidirectional: true)
+		graph.connectNodeToClosestPointOnNavigationMesh(startNode)
 		graph.connectNodeToClosestPointOnNavigationMesh(endNode)
 
 		if let path = graph.findPathFromNode(startNode, toNode: endNode) as? [GKGraphNode2D]
