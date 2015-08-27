@@ -167,10 +167,10 @@ public class NavigationMeshGraph: GKGraph
 }
 
 /// A simple `GKGraphNode2D` subclass used to override the default cost calculation behavior
-class NavigationMeshGraphNode: GKGraphNode2D
+public class NavigationMeshGraphNode: GKGraphNode2D
 {
 	// TODO: Revisit this? Find out why GKGraphNode2D's cost isn't related to distance as I thought it should be
-	override func costToNode(node: GKGraphNode) -> Float
+	override public func costToNode(node: GKGraphNode) -> Float
 	{
 		guard let graphNode = node as? GKGraphNode2D else { return super.costToNode(node) }
 		return distance_squared(position, graphNode.position)
