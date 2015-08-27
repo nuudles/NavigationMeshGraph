@@ -1,5 +1,5 @@
 PODS:
-  - NavigationMeshGraph (0.0.1)
+  - NavigationMeshGraph (0.0.2)
   - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
@@ -15,11 +15,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftyJSON:
-    :commit: a0fe1be5251916982475b12d7d699a1d943ae88b
+    :commit: f269523ac572979245baa99c8475eab73caf1e9b
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
-  NavigationMeshGraph: b52fc9273895992057a3a510cf475c6494dcca29
+  NavigationMeshGraph: bff2541b20980e99aaa377c53bc3e0450d081869
   SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
 
 COCOAPODS: 0.38.2
